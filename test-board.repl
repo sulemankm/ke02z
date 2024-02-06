@@ -1,0 +1,5 @@
+using "./ke02z.repl"
+
+led: Miscellaneous.LED @ gpioA 27
+
+switch1: Miscellaneous.Button @ gpioA 26

@@ -1,0 +1,108 @@
+cpu: CPU.CortexM @ sysbus
+    cpuType: "cortex-m0+"
+    nvic: nvic
+
+sysTick: Timers.KE02Z_TICK @ sysbus 0xE000E010
+    IRQ -> cpu@15
+    
+nvic: IRQControllers.NVIC @ sysbus 0xE000E100
+    systickFrequency: 16000000 // 16 MHz
+    IRQ -> cpu@0
+
+wdt: Timers.KE02Z_WDT @ sysbus 0x40052000
+    IRQ -> nvic@28
+
+ics: Miscellaneous.KE02Z_ICS @ sysbus 0x40064000
+    IRQ -> nvic@27
+
+flash: Memory.MappedMemory @ sysbus 0x0
+    size: 0x00010000 // 64 KB
+
+sram: Memory.MappedMemory @ sysbus 0x1FFFFC00
+    size: 0x00001000 // 4 KB
+
+gpioA: GPIOPort.NXPGPIOPort @ {
+    sysbus new Bus.BusMultiRegistration { address: 0x400FF000; size: 0x40; region: "gpio" };
+    sysbus new Bus.BusMultiRegistration { address: 0x40049000; size: 0xD0; region: "port" }}
+    numberOfPins: 32
+
+gpioB: GPIOPort.NXPGPIOPort @ {
+    sysbus new Bus.BusMultiRegistration { address: 0x400FF040; size: 0x40; region: "gpio" };
+    sysbus new Bus.BusMultiRegistration { address: 0x4004A000; size: 0xD0; region: "port" }}
+    numberOfPins: 32
+
+uart0: UART.KE02Z_UART @ sysbus 0x4006A000
+    IRQ -> nvic@12
+
+uart1: UART.KE02Z_UART @ sysbus 0x4006B000
+    IRQ -> nvic@12
+
+uart2: UART.KE02Z_UART @ sysbus 0x4006C000
+    IRQ -> nvic@14
+
+sysbus:
+    init:
+        // System Memory Map
+        Tag <0x00000000, 0x07FFFFFF> "ProgramFlash"
+        Tag <0x10000000, 0x100000FF> "EEPROM"
+        Tag <0x1FFFFC00, 0x1FFFFFFF> "SRAM_L"
+        Tag <0x20000000, 0x20000BFF> "SRAM_R"
+        Tag <0x40000000, 0x4007FFFF> "AIPSPeripherals" // AIPS
+        Tag <0x400FF000, 0x400FFFFF> "GPIO"
+        Tag <0x44000000, 0x5FFFFFFF> "BitManipulationEngine" // BME
+        Tag <0xE0000000, 0xE00FFFFF> "PrivatePeripherals" // PPB
+        Tag <0xF0003000, 0xF0003FFF> "MiscControlModule" // MCM
+        Tag <0xF8000000, 0xFFFFFFFF> "FastGPIO" // FGPIO
+
+        // Private Peripheral Bus (PPB) Memory Map
+        Tag <0xE000E010, 0xE000E0FF> "SysTick"
+        Tag <0xE000E100, 0xE000ECFF> "NVIC"
+        Tag <0xE000ED00, 0xE000ED8F> "SystemControlBlock" // SCB
+        Tag <0xE000EDF0, 0xE000EEFF> "Debug"
+        Tag <0xE00FF000, 0xE00FFFFF> "CoreRomSpace" // CRS
+
+        // Peripheral Bridge (AIPS-Lite) Memory Map
+        Tag <0x4000F000, 0x4000F004> "GpioController" // (aliased to 0x400F_F000)
+        Tag <0x40020000, 0x40020001> "FlashMemory" // FTMRH
+        Tag <0x40031000, 0x40031001> "IrqController" // IRQ
+        Tag <0x40032000, 0x40032004> "CyclicRedundancyCheck" // CRC
+        Tag <0x40037000, 0x40037004> "ProgrammableInterruptTimers" // PIT
+        Tag <0x40038000, 0x40038004> "FlexTimer0" // FTM0
+        Tag <0x40039000, 0x40039004> "FlexTimer1" // FTM1
+        Tag <0x4003A000, 0x4003A004> "FlexTimer2" // FTM2
+        Tag <0x4003B000, 0x4003B004> "AnalogToDigitalConverter" // ADC
+        Tag <0x4003D000, 0x4003D004> "RealtimeClock" // RTC
+
+        Tag <0x40048000, 0x4004801B> "SystemIntegrationModule" // SIM : TODO: Check Address Range
+        // System Integration Module Registers
+        Tag <0x40048000, 0x40048003> "SystemResetStatusAndID" //SIM_SRSID
+        Tag <0x40048004, 0x40048007> "SystemOptions" //SIM_SOPT
+        Tag <0x40048008, 0x4004800B> "PinSelection" //SIM_PINSEL
+        Tag <0x4004800C, 0x4004800F> "SystemClockGatingClock" //SIM_SCGC
+        Tag <0x40048010, 0x40048013> "SIM_UUIDL" // Universally Unique Identifier Low
+        Tag <0x40048014, 0x40048017> "SIM_UUIDH" // Universally Unique Identifier Hi
+        Tag <0x40048018, 0x4004801B> "BusClockDivider" //SIM_BUSDIV
+
+        Tag <0x40049000, 0x40049004> "PortController" // 
+        Tag <0x40052000, 0x40052004> "WatchDog" // WDOG : TODO: Check Address Range
+
+        Tag <0x40064000, 0x40064004> "InternalClockSource" // ICS 
+        Tag <0x40064000, 0x40064000> "ICS_C1" 0x04 // ICS 
+        Tag <0x40064001, 0x40064001> "ICS_C2" 0x20 // ICS 
+        Tag <0x40064002, 0x40064002> "ICS_C3" // ICS 
+        Tag <0x40064003, 0x40064003> "ICS_C4" // ICS 
+        Tag <0x40064004, 0x40064004> "ICS_S" 0x14 // ICS 
+
+        Tag <0x40065000, 0x40065001> "SystemOscillator" 0xF // OSC
+        Tag <0x40066000, 0x40066001> "I2C0"
+        Tag <0x4006A000, 0x4006A001> "UART0" // 
+        Tag <0x4006B000, 0x4006B001> "UART1" // 
+        Tag <0x4006C000, 0x4006C001> "UART2" // 
+        Tag <0x40073000, 0x40073001> "AnalogComparator0" // ACMP0
+        Tag <0x40074000, 0x40074001> "AnalogComparator1" // ACMP1
+        Tag <0x40076000, 0x40076001> "SerialPeripheralInterface0" // SPI0
+        Tag <0x40077000, 0x40077001> "SerialPeripheralInterface1" // SPI1
+        Tag <0x40079000, 0x40079001> "KeyboardInterrupt0" // KBI0
+        Tag <0x4007A000, 0x4007A001> "KeyboardInterrupt1" // KBI1
+        Tag <0x4007D000, 0x4007D001> "PowerManagementController" // PMC
+        Tag <0x400FF000, 0x400FF004> "GpioControllerAlias" // Aias of 0x4000F000 above

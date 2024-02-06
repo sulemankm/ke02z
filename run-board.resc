@@ -1,0 +1,38 @@
+:name: Kinetis KE02Z
+:description: KE02Z based board.
+
+include $ORIGIN/ke02zlib/KE02Z_TICK.cs
+include $ORIGIN/ke02zlib/KE02Z_WDT.cs
+include $ORIGIN/ke02zlib/KE02Z_ICS.cs
+include $ORIGIN/ke02zlib/KE02Z_UART.cs
+
+using sysbus
+$name?="KE02Z"
+mach create $name
+
+machine LoadPlatformDescription $ORIGIN/ecu-board.repl
+
+emulation CreateServerSocketTerminal 3456 "term"
+connector Connect sysbus.uart0 term
+
+showAnalyzer uart1
+
+$bin?=@C:\Users\Admin\MCUXpressoIDE\workspace\MKE02Z4_Project\Debug\MKE02Z4_Project.axf
+
+macro reset
+"""
+    sysbus LoadELF $bin
+"""
+sysbus LogAllPeripheralsAccess true
+
+runMacro $reset
+
+//cpu LogFunctionNames true true
+//sysbus LogPeripheralAccess uart1
+//sysbus LogAllPeripheralsAccess true
+//machine LoadPlatformDescriptionFromString 'uart1: UART.KE02Z_UART @ sysbus 0x4006B000 { IRQ -> nvic@13 }'
+
+//emulation CreateServerSocketTerminal 3456 "term"
+//emulation CreateServerSocketTerminal 3456 "term" false // to suppress initial config bytes
+//connector Connect sysbus.uart0 term
+//$bin?=@C:\Users\sulem\mcuXpresso-ws\MKE02Z4_Blinky\Renode\MKE02Z4_Blinky.axf
