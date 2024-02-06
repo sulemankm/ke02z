@@ -75,7 +75,9 @@ namespace Antmicro.Renode.Peripherals.UART
                     {
                         return transmitQueue.Count <= transmitWatermark;
                     },name: "TDRE")
-                    .WithTaggedFlag("TC", 6)
+                    .WithFlag(6, FieldMode.Read, valueProviderCallback: (_) => {
+                        return (transmitQueue.Count <= 0); // transmit queue empty?
+                    }, name: "TC")
                     .WithFlag(5, FieldMode.Read, valueProviderCallback: _ =>
                     {
                         return Count >= receiverWatermark;
@@ -137,6 +139,9 @@ namespace Antmicro.Renode.Peripherals.UART
 
             IRQ = new GPIO();
             registers = new ByteRegisterCollection(this, registersMap);
+            
+            registers.Write((long)Registers.Status1, (byte)0xC0); // Transmitter Idle & Tx buffer empty
+
         }
 
         public byte ReadByte(long offset)
@@ -189,6 +194,14 @@ namespace Antmicro.Renode.Peripherals.UART
         {
             IRQ.Set((transmitterEnabled.Value && transmitterIRQEnabled.Value) || 
                     (receiverEnabled.Value && receiverIRQEnabled.Value && Count >= receiverWatermark));
+        }
+
+        public override void Reset()
+        {
+            lock(innerLock) {
+                transmitQueue.Clear();
+            }
+            base.Reset();
         }
 
         private uint baudRateDivValue;

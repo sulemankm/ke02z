@@ -1,2 +1,2 @@
 # ke02z
-Emulation for NXP Kinetis KE02Z microcontroller using Renode
+Emulation for NXP Kinetis KE02Z microcontroller using [Renode](https://github.com/sulemankm/renode).
