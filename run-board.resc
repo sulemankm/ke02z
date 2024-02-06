@@ -1,7 +1,6 @@
 :name: Kinetis KE02Z
 :description: KE02Z based test board.
 
-include $ORIGIN/lib/KE02Z_TICK.cs
 include $ORIGIN/lib/KE02Z_WDT.cs
 include $ORIGIN/lib/KE02Z_ICS.cs
 include $ORIGIN/lib/KE02Z_UART.cs
@@ -17,7 +16,7 @@ connector Connect sysbus.uart0 term
 
 showAnalyzer uart1
 
-$bin?=@C:\Users\Admin\MCUXpressoIDE\workspace\MKE02Z4_Project\Debug\MKE02Z4_Project.axf
+$bin?=@C:\Users\sulem\mcuXpresso-ws\MKE02Z4_Blinky\Debug\MKE02Z4_Blinky.axf
 
 macro reset
 """
@@ -36,3 +35,4 @@ runMacro $reset
 //emulation CreateServerSocketTerminal 3456 "term" false // to suppress initial config bytes
 //connector Connect sysbus.uart0 term
 //$bin?=@C:\Users\sulem\mcuXpresso-ws\MKE02Z4_Blinky\Renode\MKE02Z4_Blinky.axf
+//C:\Users\Admin\MCUXpressoIDE\workspace\MKE02Z4_Project\Debug\MKE02Z4_Project.axf
