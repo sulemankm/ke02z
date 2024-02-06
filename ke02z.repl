@@ -3,7 +3,7 @@ cpu: CPU.CortexM @ sysbus
     nvic: nvic
   
 nvic: IRQControllers.NVIC @ sysbus 0xE000E000
-    systickFrequency: 1000 // 1 KHz
+    systickFrequency: 1000000000 // 1000 MHz
     IRQ -> cpu@0
 
 wdt: Timers.KE02Z_WDT @ sysbus 0x40052000
