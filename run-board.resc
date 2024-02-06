@@ -1,7 +1,6 @@
 :name: Kinetis KE02Z
 :description: KE02Z based test board.
 
-include $ORIGIN/lib/KE02Z_TICK.cs
 include $ORIGIN/lib/KE02Z_WDT.cs
 include $ORIGIN/lib/KE02Z_ICS.cs
 include $ORIGIN/lib/KE02Z_UART.cs

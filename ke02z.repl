@@ -2,9 +2,6 @@ cpu: CPU.CortexM @ sysbus
     cpuType: "cortex-m0+"
     nvic: nvic
 
-sysTick: Timers.KE02Z_TICK @ sysbus 0xE000E010
-    IRQ -> cpu@15
-    
 nvic: IRQControllers.NVIC @ sysbus 0xE000E100
     systickFrequency: 16000000 // 16 MHz
     IRQ -> cpu@0
