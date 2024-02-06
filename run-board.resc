@@ -1,16 +1,16 @@
 :name: Kinetis KE02Z
-:description: KE02Z based board.
+:description: KE02Z based test board.
 
-include $ORIGIN/ke02zlib/KE02Z_TICK.cs
-include $ORIGIN/ke02zlib/KE02Z_WDT.cs
-include $ORIGIN/ke02zlib/KE02Z_ICS.cs
-include $ORIGIN/ke02zlib/KE02Z_UART.cs
+include $ORIGIN/lib/KE02Z_TICK.cs
+include $ORIGIN/lib/KE02Z_WDT.cs
+include $ORIGIN/lib/KE02Z_ICS.cs
+include $ORIGIN/lib/KE02Z_UART.cs
 
 using sysbus
 $name?="KE02Z"
 mach create $name
 
-machine LoadPlatformDescription $ORIGIN/ecu-board.repl
+machine LoadPlatformDescription $ORIGIN/test-board.repl
 
 emulation CreateServerSocketTerminal 3456 "term"
 connector Connect sysbus.uart0 term
