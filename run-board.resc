@@ -3,6 +3,7 @@
 
 include $ORIGIN/lib/KE02Z_WDT.cs
 include $ORIGIN/lib/KE02Z_ICS.cs
+include $ORIGIN/lib/KE02Z_SIM.cs
 include $ORIGIN/lib/KE02Z_UART.cs
 
 using sysbus
@@ -16,7 +17,7 @@ connector Connect sysbus.uart0 term
 
 showAnalyzer uart1
 
-$bin?=@C:\Users\sulem\mcuXpresso-ws\MKE02Z4_Blinky\Debug\MKE02Z4_Blinky.axf
+$bin?=@C:\Users\Admin\MCUXpressoIDE\workspace\MKE02Z4_Project\Debug\MKE02Z4_Project.axf
 
 macro reset
 """
@@ -26,13 +27,16 @@ sysbus LogAllPeripheralsAccess true
 
 runMacro $reset
 
-//cpu LogFunctionNames true true
-//sysbus LogPeripheralAccess uart1
-//sysbus LogAllPeripheralsAccess true
-//machine LoadPlatformDescriptionFromString 'uart1: UART.KE02Z_UART @ sysbus 0x4006B000 { IRQ -> nvic@13 }'
+macro Dummy
+"""
+cpu LogFunctionNames true true
+sysbus LogPeripheralAccess uart1
+sysbus LogAllPeripheralsAccess true
+machine LoadPlatformDescriptionFromString 'uart1: UART.KE02Z_UART @ sysbus 0x4006B000 { IRQ -> nvic@13 }'
 
-//emulation CreateServerSocketTerminal 3456 "term"
-//emulation CreateServerSocketTerminal 3456 "term" false // to suppress initial config bytes
-//connector Connect sysbus.uart0 term
-//$bin?=@C:\Users\sulem\mcuXpresso-ws\MKE02Z4_Blinky\Renode\MKE02Z4_Blinky.axf
-//C:\Users\Admin\MCUXpressoIDE\workspace\MKE02Z4_Project\Debug\MKE02Z4_Project.axf
+emulation CreateServerSocketTerminal 3456 "term"
+emulation CreateServerSocketTerminal 3456 "term" false // to suppress initial config bytes
+connector Connect sysbus.uart0 term
+$bin?=@C:\Users\sulem\mcuXpresso-ws\MKE02Z4_Blinky\Renode\MKE02Z4_Blinky.axf
+C:\Users\Admin\MCUXpressoIDE\workspace\MKE02Z4_Project\Debug\MKE02Z4_Project.axf
+"""

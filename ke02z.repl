@@ -12,6 +12,8 @@ wdt: Timers.KE02Z_WDT @ sysbus 0x40052000
 ics: Miscellaneous.KE02Z_ICS @ sysbus 0x40064000
     IRQ -> nvic@27
 
+sim: Miscellaneous.KE02Z_SIM @ sysbus 0x40048000
+
 flash: Memory.MappedMemory @ sysbus 0x0
     size: 0x00010000 // 64 KB
 
@@ -70,31 +72,9 @@ sysbus:
         Tag <0x4003B000, 0x4003B004> "AnalogToDigitalConverter" // ADC
         Tag <0x4003D000, 0x4003D004> "RealtimeClock" // RTC
 
-        Tag <0x40048000, 0x4004801B> "SystemIntegrationModule" // SIM : TODO: Check Address Range
-        // System Integration Module Registers
-        Tag <0x40048000, 0x40048003> "SystemResetStatusAndID" //SIM_SRSID
-        Tag <0x40048004, 0x40048007> "SystemOptions" //SIM_SOPT
-        Tag <0x40048008, 0x4004800B> "PinSelection" //SIM_PINSEL
-        Tag <0x4004800C, 0x4004800F> "SystemClockGatingClock" //SIM_SCGC
-        Tag <0x40048010, 0x40048013> "SIM_UUIDL" // Universally Unique Identifier Low
-        Tag <0x40048014, 0x40048017> "SIM_UUIDH" // Universally Unique Identifier Hi
-        Tag <0x40048018, 0x4004801B> "BusClockDivider" //SIM_BUSDIV
-
         Tag <0x40049000, 0x40049004> "PortController" // 
-        Tag <0x40052000, 0x40052004> "WatchDog" // WDOG : TODO: Check Address Range
-
-        Tag <0x40064000, 0x40064004> "InternalClockSource" // ICS 
-        Tag <0x40064000, 0x40064000> "ICS_C1" 0x04 // ICS 
-        Tag <0x40064001, 0x40064001> "ICS_C2" 0x20 // ICS 
-        Tag <0x40064002, 0x40064002> "ICS_C3" // ICS 
-        Tag <0x40064003, 0x40064003> "ICS_C4" // ICS 
-        Tag <0x40064004, 0x40064004> "ICS_S" 0x14 // ICS 
-
         Tag <0x40065000, 0x40065001> "SystemOscillator" 0xF // OSC
         Tag <0x40066000, 0x40066001> "I2C0"
-        Tag <0x4006A000, 0x4006A001> "UART0" // 
-        Tag <0x4006B000, 0x4006B001> "UART1" // 
-        Tag <0x4006C000, 0x4006C001> "UART2" // 
         Tag <0x40073000, 0x40073001> "AnalogComparator0" // ACMP0
         Tag <0x40074000, 0x40074001> "AnalogComparator1" // ACMP1
         Tag <0x40076000, 0x40076001> "SerialPeripheralInterface0" // SPI0
