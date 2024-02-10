@@ -11,7 +11,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="KE02Z_UART,0.txt" />
+    <Compile Include="KE02Z_CRC.cs" />
+    <Compile Include="KE02Z_ICS.cs" />
+    <Compile Include="KE02Z_SIM.cs" />
+    <Compile Include="KE02Z_UART.cs" />
+    <Compile Include="KE02Z_WDT.cs" />
   </ItemGroup>
 
   <ItemGroup>
