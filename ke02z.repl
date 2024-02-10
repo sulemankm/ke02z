@@ -12,6 +12,8 @@ wdt: Timers.KE02Z_WDT @ sysbus 0x40052000
 ics: Miscellaneous.KE02Z_ICS @ sysbus 0x40064000
     IRQ -> nvic@27
 
+osc: Miscellaneous.KE02Z_OSC @ sysbus 0x40065000
+
 sim: Miscellaneous.KE02Z_SIM @ sysbus 0x40048000
 
 flash: Memory.MappedMemory @ sysbus 0x0
