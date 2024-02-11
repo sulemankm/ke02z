@@ -25,7 +25,7 @@ namespace Antmicro.Renode.Peripherals.Miscellaneous
             {
                 {(long)Registers.Control1, new ByteRegister(this)
                     .WithValueField(6, 2, out clockSource, name: "CLKS")
-                    .WithTag("RDIV", 3, 3)
+                    .WithValueField(3, 3, out referenceDivider, name: "RDIV")
                     .WithFlag(2, out internalRefSelected, name: "IREFS")
                     .WithTaggedFlag("IRCLKEN", 1)
                     .WithTaggedFlag("IREFSTN", 0)
@@ -121,7 +121,7 @@ namespace Antmicro.Renode.Peripherals.Miscellaneous
         private IFlagRegisterField internalRefSelected;
         private IFlagRegisterField lowPower;
         private IValueRegisterField slowInternalRefClockTrim;
-        
+        private IValueRegisterField referenceDivider;
         private enum Registers
         {
             Control1 = 0x0,

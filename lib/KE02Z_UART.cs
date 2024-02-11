@@ -58,7 +58,6 @@ namespace Antmicro.Renode.Peripherals.UART
                 },
                 {(long)Registers.Control2, new ByteRegister(this)
                     .WithFlag(7, out transmitterIRQEnabled, name: "TIE")
-                    //.WithTaggedFlag("TCIE", 6)
                     .WithFlag(6, out txCompleteIRQEnable, name: "TCIE")
                     .WithFlag(5, out receiverIRQEnabled, name: "RIE")
                     .WithTaggedFlag("ILIE", 4)
@@ -103,13 +102,9 @@ namespace Antmicro.Renode.Peripherals.UART
                     .WithTaggedFlag("T8", 6)
                     .WithTaggedFlag("TXDIR", 5)
                     .WithTaggedFlag("TXINV", 4)
-                    //.WithTaggedFlag("ORIE", 3)
                     .WithFlag(3, out overrunIRQEnable, name: "ORIE")
-                    //.WithTaggedFlag("NEIE", 2)
                     .WithFlag(2, out noiseErrorIRQEnable, name: "NEIE")
-                    //.WithTaggedFlag("FEIE", 1)
                     .WithFlag(1, out framingErrorIRQEnable, name: "FEIE")
-                    //.WithTaggedFlag("PEIE", 0)
                     .WithFlag(0, out parityErrorIRQEnable, name: "PEIE")
                 },
                 {(long)Registers.Data, new ByteRegister(this)
@@ -159,7 +154,6 @@ namespace Antmicro.Renode.Peripherals.UART
         public void WriteByte(long offset, byte value)
         {
             registers.Write(offset, value);
-            //Console.Write("UART Write: " + value);
         }
 
         protected override void CharWritten()
