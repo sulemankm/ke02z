@@ -58,7 +58,8 @@ namespace Antmicro.Renode.Peripherals.UART
                 },
                 {(long)Registers.Control2, new ByteRegister(this)
                     .WithFlag(7, out transmitterIRQEnabled, name: "TIE")
-                    .WithTaggedFlag("TCIE", 6)
+                    //.WithTaggedFlag("TCIE", 6)
+                    .WithFlag(6, out txCompleteIRQEnable, name: "TCIE")
                     .WithFlag(5, out receiverIRQEnabled, name: "RIE")
                     .WithTaggedFlag("ILIE", 4)
                     .WithFlag(3, out transmitterEnabled, name: "TE")
@@ -102,10 +103,14 @@ namespace Antmicro.Renode.Peripherals.UART
                     .WithTaggedFlag("T8", 6)
                     .WithTaggedFlag("TXDIR", 5)
                     .WithTaggedFlag("TXINV", 4)
-                    .WithTaggedFlag("ORIE", 3)
-                    .WithTaggedFlag("NEIE", 2)
-                    .WithTaggedFlag("FEIE", 1)
-                    .WithTaggedFlag("PEIE", 0)
+                    //.WithTaggedFlag("ORIE", 3)
+                    .WithFlag(3, out overrunIRQEnable, name: "ORIE")
+                    //.WithTaggedFlag("NEIE", 2)
+                    .WithFlag(2, out noiseErrorIRQEnable, name: "NEIE")
+                    //.WithTaggedFlag("FEIE", 1)
+                    .WithFlag(1, out framingErrorIRQEnable, name: "FEIE")
+                    //.WithTaggedFlag("PEIE", 0)
+                    .WithFlag(0, out parityErrorIRQEnable, name: "PEIE")
                 },
                 {(long)Registers.Data, new ByteRegister(this)
                    .WithValueField(0, 8,
@@ -175,7 +180,9 @@ namespace Antmicro.Renode.Peripherals.UART
         public override uint BaudRate => baudRate;
         public override Bits StopBits => Bits.One;
         public override Parity ParityBit => Parity.Even;
-
+        private uint baudRate;
+        private uint parity;
+        private uint stopBits;
         private void TransmitData()
         {
             if(transmitQueue.Count < transmitWatermark)
@@ -207,7 +214,6 @@ namespace Antmicro.Renode.Peripherals.UART
         private uint baudRateDivValue;
         private uint receiverWatermark = 0;
         private uint transmitWatermark = 0;
-
         private readonly Queue<byte> transmitQueue;
         private readonly ByteRegisterCollection registers;
         //private readonly IValueRegisterField baudRateFineAdjustValue;
@@ -215,9 +221,11 @@ namespace Antmicro.Renode.Peripherals.UART
         private readonly IFlagRegisterField transmitterEnabled;
         private readonly IFlagRegisterField transmitterIRQEnabled;
         private readonly IFlagRegisterField receiverIRQEnabled;
-        private uint baudRate;
-        private uint parity;
-        private uint stopBits;
+        private readonly IFlagRegisterField txCompleteIRQEnable;
+        private readonly IFlagRegisterField overrunIRQEnable;
+        private readonly IFlagRegisterField noiseErrorIRQEnable;
+        private readonly IFlagRegisterField framingErrorIRQEnable;
+        private readonly IFlagRegisterField parityErrorIRQEnable;
 
         private enum Registers
         {
