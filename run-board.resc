@@ -15,13 +15,17 @@ machine LoadPlatformDescription $ORIGIN/test-board.repl
 
 showAnalyzer uart1
 
-$bin?=@C:\Users\Admin\MCUXpressoIDE\workspace\MKE02Z4_Project\Debug\MKE02Z4_Project.axf
+$$bin?=@F:\workspaces\mcuXpresso-ws\ecu\mcux\microjet_ecu\Debug\microjet_ecu.axf
 
 macro reset
 """
     sysbus LoadELF $bin
 """
+
+LogLevel 0
+LogFile @ run-board.Log
 sysbus LogAllPeripheralsAccess true
+cpu LogFunctionNames true true
 
 runMacro $reset
 
@@ -36,3 +40,5 @@ runMacro $reset
 //connector Connect sysbus.uart0 term
 //$bin?=@C:\Users\sulem\mcuXpresso-ws\MKE02Z4_Blinky\Renode\MKE02Z4_Blinky.axf
 //C:\Users\Admin\MCUXpressoIDE\workspace\MKE02Z4_Project\Debug\MKE02Z4_Project.axf
+//$bin?=@F:\workspaces\mcuXpresso-ws\MKE02Z4_Blinky\Debug\MKE02Z4_Blinky.axf
+//$bin?=@F:\workspaces\mcuXpresso-ws\ecu\mcux\microjet_ecu\Debug\microjet_ecu.axf
