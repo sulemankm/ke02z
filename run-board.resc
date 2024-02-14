@@ -15,7 +15,7 @@ machine LoadPlatformDescription $ORIGIN/test-board.repl
 
 showAnalyzer uart1
 
-$bin?=@F:\workspaces\mcuXpresso-ws\ecu\mcux\microjet_ecu\Release\microjet_ecu.axf
+$bin?=@F:\workspaces\mcuXpresso-ws\ecu\mcux\microjet_ecu\Debug\microjet_ecu.axf
 
 macro reset
 """
@@ -28,17 +28,3 @@ sysbus LogAllPeripheralsAccess true
 cpu LogFunctionNames true true
 
 runMacro $reset
-
-
-//cpu LogFunctionNames true true
-//sysbus LogPeripheralAccess uart1
-//sysbus LogAllPeripheralsAccess true
-//machine LoadPlatformDescriptionFromString 'uart1: UART.KE02Z_UART @ sysbus 0x4006B000 { IRQ -> nvic@13 }'
-
-//emulation CreateServerSocketTerminal 3456 "term"
-//emulation CreateServerSocketTerminal 3456 "term" false // to suppress initial config bytes
-//connector Connect sysbus.uart0 term
-//$bin?=@C:\Users\sulem\mcuXpresso-ws\MKE02Z4_Blinky\Renode\MKE02Z4_Blinky.axf
-//C:\Users\Admin\MCUXpressoIDE\workspace\MKE02Z4_Project\Debug\MKE02Z4_Project.axf
-//$bin?=@F:\workspaces\mcuXpresso-ws\MKE02Z4_Blinky\Debug\MKE02Z4_Blinky.axf
-//$bin?=@F:\workspaces\mcuXpresso-ws\ecu\mcux\microjet_ecu\Debug\microjet_ecu.axf
