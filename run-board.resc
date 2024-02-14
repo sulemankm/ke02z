@@ -15,7 +15,7 @@ machine LoadPlatformDescription $ORIGIN/test-board.repl
 
 showAnalyzer uart1
 
-$$bin?=@F:\workspaces\mcuXpresso-ws\ecu\mcux\microjet_ecu\Debug\microjet_ecu.axf
+$bin?=@F:\workspaces\mcuXpresso-ws\ecu\mcux\microjet_ecu\Release\microjet_ecu.axf
 
 macro reset
 """
@@ -23,7 +23,7 @@ macro reset
 """
 
 LogLevel 0
-LogFile @ run-board.Log
+LogFile @$ORIGIN/run-board.Log
 sysbus LogAllPeripheralsAccess true
 cpu LogFunctionNames true true
 
